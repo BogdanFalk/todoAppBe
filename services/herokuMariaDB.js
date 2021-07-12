@@ -1,4 +1,3 @@
-let logging = require('../helpers/logging.js');
 const personModel = require('../models/person.js');
 const actionModel = require('../models/action.js');
 const Sequelize = require('sequelize');
@@ -15,17 +14,17 @@ var Action = actionModel(sequelize, Sequelize);
 Person.hasMany(Action, { as: 'actions' });
 
 sequelize.sync({ force: false }).then(() => {
-  logging.LOG(`Database & tables created!`);
+  console.log(`Database & tables created!`);
 });
 
 function testConnection() {
   sequelize
     .authenticate()
     .then(() => {
-      logging.LOG('Connection has been established successfully.');
+      console.log('Connection has been established successfully.');
     })
     .catch((err) => {
-      logging.ERR('Unable to connect to the database:' + err.toString());
+      console.err('Unable to connect to the database:' + err.toString());
     });
 }
 

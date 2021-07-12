@@ -23,7 +23,7 @@ function personAPIs(app) {
           Person.create(newPerson);
           res.status(200).send('Person Added!');
         } catch (err) {
-          logging.ERR('Creating Person Failed');
+          console.err('Creating Person Failed');
           res.status(400).json({
             error: err,
           });
@@ -34,3 +34,7 @@ function personAPIs(app) {
     });
   });
 }
+
+module.exports = {
+  personAPIs,
+};
