@@ -14,7 +14,7 @@ const corsOptions = {
 var port = process.env.PORT || 5000;
 app.use(express.json());
 
-app.use(cors(corsOptions));
+app.use(cors({origin:true,credentials: true}));
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({
     limit: '50mb',
