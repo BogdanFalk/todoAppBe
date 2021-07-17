@@ -6,7 +6,7 @@ var { setAPIs } = require(__dirname + '/serverAPIs.js');
 const app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:3000/"],
+  origin: ["http://localhost:3000/","localhost:3000/","http://localhost:3000/todoApp","*"],
   optionsSuccessStatus: 200,
   credentials: true,
 };
