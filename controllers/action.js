@@ -17,7 +17,7 @@ function actionAPIs(app) {
       let availableParameters = ['name', 'isDone', 'personId'];
       Object.keys(req.body).length < 1
         ? res
-            .status(403)
+            .status(200)
             .send(
               `An invalid parameter was provided! Available parameters are ${availableParameters}`
             )
@@ -31,7 +31,7 @@ function actionAPIs(app) {
           ) {
             send = true;
             res
-              .status(403)
+              .status(200)
               .send(
                 `An invalid parameter was provided! Available parameters are ${availableParameters}`
               );
@@ -48,7 +48,7 @@ function actionAPIs(app) {
           isDone === undefined
         ) {
           res
-            .status(403)
+            .status(200)
             .send(
               `One or more parameters are either null or undefined. all: ${availableParameters} are required.`
             );
