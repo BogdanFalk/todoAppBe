@@ -50,22 +50,22 @@ function actionAPIs(app) {
           .send(
             `One or more parameters are either null or undefined. all: ${availableParameters} are required.`
           );
-      }
+      } else {
+        newAction = {};
+        newAction.name = name;
+        newAction.isDone = isDone;
+        newAction.personId = personId;
 
-      newAction = {};
-      newAction.name = name;
-      newAction.isDone = isDone;
-      newAction.personId = personId;
-
-      try {
-        Action.create(newAction).then((action) => {
-          res.status(200).send(action);
-        });
-      } catch (err) {
-        console.log('Creating Action Failed');
-        res.status(400).json({
-          error: err,
-        });
+        try {
+          Action.create(newAction).then((action) => {
+            res.status(200).send(action);
+          });
+        } catch (err) {
+          console.log('Creating Action Failed');
+          res.status(400).json({
+            error: err,
+          });
+        }
       }
     }
   );
@@ -85,73 +85,65 @@ function actionAPIs(app) {
         .send(
           `One or more parameters are either null or undefined. all: ${availableParameters} are required.`
         );
-    }
-    try {
-      Action.findOne({ where: { id: id } }).then((action) => {
-        action.isDone = isDone;
-        action.save().then((action) => {
-          res.status(200).send(action);
+    } else
+      try {
+        Action.findOne({ where: { id: id } }).then((action) => {
+          action.isDone = isDone;
+          action.save().then((action) => {
+            res.status(200).send(action);
+          });
         });
-      });
-    } catch (error) {
-      res.status(400).json({ error: err });
-    }
+      } catch (error) {
+        res.status(400).json({ error: err });
+      }
   });
 
   app.delete('/action', (req, res) => {
     const { id } = req.body;
-    
+
     let availableParameters = ['id'];
-    if (
-      id === null ||
-      id === undefined ||
-      id === NaN
-    ) {
+    if (id === null || id === undefined || id === NaN) {
       res
         .status(403)
         .send(
           `One or more parameters are either null or undefined. ${availableParameters} is required as a number.`
         );
-    }
-    try {
-      Action.destroy({ where: { id: id } }).then((actions) => {
-        if (actions > 0) res.status(200).send('Action deleted');
-        else res.status(200).send("Action doesn't exist!");
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({
-        error: err,
-      });
-    }
+    } else
+      try {
+        Action.destroy({ where: { id: id } }).then((actions) => {
+          if (actions > 0) res.status(200).send('Action deleted');
+          else res.status(200).send("Action doesn't exist!");
+        });
+      } catch (error) {
+        console.log(error);
+        res.status(400).json({
+          error: err,
+        });
+      }
   });
 
   app.post('/actionsOfUser', (req, res) => {
     const { personId } = req.body;
-    
+
     let availableParameters = ['personId'];
-    if (
-      personId === null ||
-      personId === undefined ||
-      personId === NaN
-    ) {
+    if (personId === null || personId === undefined || personId === NaN) {
       res
         .status(403)
         .send(
           `One or more parameters are either null or undefined. ${availableParameters} is required as a number.`
         );
-    }
-    try {
-      Action.findAll({ where: { personId: personId } }).then((actions) => {
-        if (actions.length > 0) res.status(200).send(actions);
-        else res.status(200).send({});
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({
-        error: err,
-      });
-    }
+    } else
+      try {
+        Action.findAll({ where: { personId: personId } }).then((actions) => {
+          if (actions.length > 0) res.status(200).send(actions);
+          else res.status(200).send({});
+        });
+      } catch (error) {
+        console.log(error);
+        res.status(400).json({
+          error: err,
+        });
+      }
   });
 }
 
