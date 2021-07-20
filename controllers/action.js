@@ -102,7 +102,7 @@ function actionAPIs(app) {
   });
 
   app.delete('/action', (req, res) => {
-    console.log(JSON.stringify(req));
+    console.log(req.body);
     const { id } = req.body;
 
     console.log("Delete id:",id);
