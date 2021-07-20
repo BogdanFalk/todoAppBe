@@ -7,7 +7,25 @@ function personAPIs(app) {
   });
 
   app.post('/registerPerson', (req, res) => {
+
     const { password, email, firstName, lastName } = req.body;
+    let availableParameters = ['password', 'email', 'firstName', 'lastName'];
+    if (
+      password === null ||
+      email === null ||
+      firstName === null ||
+      lastName === null ||
+      password === undefined ||
+      email === undefined ||
+      firstName === undefined ||
+      lastName === undefined
+    ) {
+      res
+        .status(403)
+        .send(
+          `One or more parameters are either null or undefined. all: ${availableParameters} are required.`
+        );
+    }
     Person.findOne({
       where: { email: email },
     }).then((person) => {
@@ -36,6 +54,19 @@ function personAPIs(app) {
 
   app.post('/loginPerson', (req, res) => {
     const { email, password } = req.body;
+    let availableParameters = ['password', 'email'];
+    if (
+      password === null ||
+      email === null ||
+      password === undefined ||
+      email === undefined
+    ) {
+      res
+        .status(403)
+        .send(
+          `One or more parameters are either null or undefined. all: ${availableParameters} are required.`
+        );
+    }
     try {
       Person.findOne({
         where: { email: email },
