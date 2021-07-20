@@ -104,8 +104,10 @@ function actionAPIs(app) {
   app.delete('/action', (req, res) => {
     const { id } = req.body;
 
+    console.log("Delete id:",id);
     let availableParameters = ['id'];
     if (id === null || id === undefined || id === NaN) {
+      console.log(`One or more parameters are either null or undefined. ${availableParameters} is required as a number.`)
       res
         .status(403)
         .send(
