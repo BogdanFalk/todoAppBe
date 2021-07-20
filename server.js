@@ -5,11 +5,22 @@ var { setAPIs } = require(__dirname + '/serverAPIs.js');
 
 const app = express();
 
+const corsOptions = {
+  origin: ["http://localhost:3000/","localhost:3000/","http://localhost:3000/todoApp","*"],
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+
 var port = process.env.PORT || 5000;
 app.use(express.json());
-app.use(cors());
-app.use(bodyParser.json());
 
+app.use(cors({origin:true,credentials: true}));
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({
+    limit: '50mb',
+    extended: true,
+}));
+app.options('*', cors()) 
 setAPIs(app);
 
 app.listen(port);
