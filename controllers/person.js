@@ -1,5 +1,4 @@
 const { Person } = require('../services/herokuMariaDB.js');
-const { Action } = require('../services/herokuMariaDB.js');
 var passwordHash = require('password-hash');
 
 function personAPIs(app) {
