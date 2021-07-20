@@ -13,6 +13,7 @@ function actionAPIs(app) {
     (req, res) => {
       const { name, isDone, personId } = req.body;
 
+      let send = false;
       let availableParameters = ['name', 'isDone', 'personId'];
       Object.keys(req.body).length < 1
         ? res
@@ -28,6 +29,7 @@ function actionAPIs(app) {
               (availableParam) => availableParam === param
             )
           ) {
+            send = true;
             res
               .status(403)
               .send(
@@ -36,35 +38,36 @@ function actionAPIs(app) {
           }
         });
       }
+      if (!send) {
+        if (
+          name === null ||
+          isDone === null ||
+          personId === null ||
+          name === undefined ||
+          personId === undefined ||
+          isDone === undefined
+        ) {
+          res
+            .status(403)
+            .send(
+              `One or more parameters are either null or undefined. all: ${availableParameters} are required.`
+            );
+        } else {
+          newAction = {};
+          newAction.name = name;
+          newAction.isDone = isDone;
+          newAction.personId = personId;
 
-      if (
-        name === null ||
-        isDone === null ||
-        personId === null ||
-        name === undefined ||
-        personId === undefined ||
-        isDone === undefined
-      ) {
-        res
-          .status(403)
-          .send(
-            `One or more parameters are either null or undefined. all: ${availableParameters} are required.`
-          );
-      } else {
-        newAction = {};
-        newAction.name = name;
-        newAction.isDone = isDone;
-        newAction.personId = personId;
-
-        try {
-          Action.create(newAction).then((action) => {
-            res.status(200).send(action);
-          });
-        } catch (err) {
-          console.log('Creating Action Failed');
-          res.status(400).json({
-            error: err,
-          });
+          try {
+            Action.create(newAction).then((action) => {
+              res.status(200).send(action);
+            });
+          } catch (err) {
+            console.log('Creating Action Failed');
+            res.status(400).json({
+              error: err,
+            });
+          }
         }
       }
     }
